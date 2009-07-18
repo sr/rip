@@ -1,0 +1,62 @@
+.TH RIP 1 rip\-VERSION
+.SH NAME
+Rip: Ruby’s Intelligent Packaging
+.SH INSTALLING RIP
+.P
+Installing Rip is as simple as
+.B "gem install rip"
+.P
+Verify it worked with the
+.B check
+command.
+.P
+.nf
+$ rip check
+All systems go.
+.fi
+.SS Without Rubygems
+.P
+Don't have Rubygems installed? Never fear! You can install Rip from a
+zip quite simply.
+.P
+.nf
+$ wget http://github.com/defunkt/rip/zipball/v0.0.1
+$ unzip defunkt-rip<TAB>
+$ cd defunkt-rip<TAB>
+$ sudo ruby setup.rb
+.fi
+
+.SS Development
+.P
+Development of Rip happens at GitHub
+./ TODO: link/note/see also
+./ github.com
+You can follow along by watching or cloning the repository:
+.P
+.nf
+$ git clone git://github.com/defunkt/rip
+$ cd rip
+$ sudo ruby setup.rb
+.fi
+.P
+You'll also want the development dependencies. They can be found in
+.B "test/dev.rip"
+./ TODO: figure notes!1
+./ [test/dev.rip](https://github.com/defunkt/rip/blob/master/test/dev.rip).
+.P
+Install them with
+.B rip
+:
+.P
+.nf
+$ rip install test/dev.rip
+.fi
+.P
+Now run the tests to make sure we're all on the same page:
+.P
+.f
+$ rake test
+.fi
+.P
+Great! Looking for something to do? Hit the issue tracker.
+./ http://github.com/defunkt/rip/issues).
