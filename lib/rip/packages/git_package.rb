@@ -10,12 +10,7 @@ module Rip
     end
 
     def version
-      return @version if @version
-
-      fetch!
-      Dir.chdir cache_path do
-        @version = git_rev_parse('origin/master')[0,7]
-      end
+      @version
     end
 
     def exists?
@@ -55,13 +50,23 @@ module Rip
     end
 
     def remote_exists?
-      return false if git_ls_remote(source).size == 0
-      return true if !@version
-
-      fetch
-      Dir.chdir(cache_path) do
-        git_cat_file(@version).size > 0
+      @version ||= "HEAD"
+      if @version.size == 40 || @version.size == 7
+        fetch!
+        return Dir.chdir(cache_path) { git_cat_file(@version).size > 0 }
       end
+
+      v = remote_refs.detect { |commit, ref|
+        commit.include?(@version) || ref.include?(@version)
+      }
+      return nil unless v
+      @version = v.first
+    end
+
+    memoize :remote_refs
+    def remote_refs
+      git_ls_remote(source).each_line.
+        map { |l| l.chomp.split("\t") }
     end
   end
 end

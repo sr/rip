@@ -20,10 +20,52 @@ installed() {
   test -f "$RIPDIR/active/lib/$1"
 }
 
+echo "# with an unknown tree-ish/commit-ish/whatever"
+ok "rip install git://127.0.0.1/test_repo 404 2>&1 | grep 'not found at'"
+
+echo "# installing a local repo"
+rip install $SRC/test_repo.git
+ok "installed simple_c.rb"
+ok "installed added.rb"
+
+rip uninstall test_repo
+
 echo "# without a version"
 rip install git://127.0.0.1/test_repo
 ok "installed simple_c.rb"
 ok "installed added.rb"
+
+rip uninstall test_repo
+
+echo "# with the version specified as a full commit sha1"
+rip install git://127.0.0.1/test_repo 3f1d6dacdedf75058e9edf23f48de03fa451f7ce
+ok "installed simple_c.rb"
+ok "! installed added.rb"
+
+rip uninstall test_repo
+
+echo "# with the version specified as a short commit sha1"
+rip install git://127.0.0.1/test_repo 3f1d6da
+ok "installed simple_c.rb"
+ok "! installed added.rb"
+
+rip uninstall test_repo
+
+echo "# with the version specified as a ref"
+rip install git://127.0.0.1/test_repo refs/heads/foobranch
+ok "installed foobranch.rb"
+
+rip uninstall test_repo
+
+echo "# with the version specified as a branch"
+rip install git://127.0.0.1/test_repo foobranch
+ok "installed foobranch.rb"
+
+rip uninstall test_repo
+
+echo "# with the version specified as a tag"
+rip install git://127.0.0.1/test_repo v42
+ok "installed version.rb"
 
 kill -9 `cat git-pid`
 rm git-pid
