@@ -1,0 +1,30 @@
+#!/bin/sh
+SRC=$(cd $(dirname "$0"); pwd)
+
+PATH="$SRC/../bin:$PATH"
+RUBYLIB="$SRC/../lib:$RUBYLIB"
+RIPDIR="$SRC/tmpripdir$$"
+RUBYOPT="rpp"
+export PATH RUBYLIB RIPDIR RUBYOPT
+
+# TODO: make this a rip command?
+ruby -rrip -e "Rip::Setup.setup_ripenv('$RIPDIR')"
+
+source $SRC/knock/knock.sh
+
+git daemon --verbose --export-all --reuseaddr --detach \
+  --pid-file=git-pid \
+  --export-all --base-path=$SRC
+
+installed() {
+  test -f "$RIPDIR/active/lib/$1"
+}
+
+echo "# without a version"
+rip install git://127.0.0.1/test_repo
+ok "installed simple_c.rb"
+ok "installed added.rb"
+
+kill -9 `cat git-pid`
+rm git-pid
+rm -rf $RIPDIR
