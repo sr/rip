@@ -1,6 +1,4 @@
 #!/bin/sh
-SRC=$(cd $(dirname "$0"); pwd)
-
 PATH="bin:$PATH"
 RUBYLIB="lib:$RUBYLIB"
 RIPDIR="`pwd`/t/tmpripdir$$"
@@ -24,7 +22,7 @@ echo "# with an unknown tree-ish/commit-ish/whatever"
 ok "rip install git://127.0.0.1/test_repo 404 2>&1 | grep 'not found at'"
 
 echo "# installing a local repo"
-rip install $SRC/test_repo.git
+rip install t/test_repo.git
 ok "installed simple_c.rb"
 ok "installed added.rb"
 

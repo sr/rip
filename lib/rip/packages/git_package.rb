@@ -2,6 +2,14 @@ module Rip
   class GitPackage < Package
     include Sh::Git
 
+    def initialize(source, version = nil, files = nil)
+      if File.directory?(file = File.expand_path(source))
+        source = file
+      end
+
+      super(source, version, files)
+    end
+
     handles "file://", "git://", '.git'
 
     memoize :name
