@@ -8,7 +8,7 @@ export PATH RUBYLIB RIPDIR RUBYOPT
 # TODO: make this a rip command?
 ruby -rrip -e "Rip::Setup.setup_ripenv('$RIPDIR')"
 
-source t/knock/knock.sh
+. t/knock/knock.sh
 
 git daemon --verbose --export-all --reuseaddr --detach \
   --pid-file=git-pid \
